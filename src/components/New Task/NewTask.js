@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import Toolbar from '../Toolbar/Toolbar';
+import SideDrawer from '../SideDrawer/SideDrawer';
+import Backdrop from '../Backdrop/Backdrop';
 
 import './NewTask.css';
 
-const NewTask = () => (
+class NewTask extends Component {
+    state = {
+        sideDrawerOpen: false
+    };
+
+    drawerToggleClickHandler = () => {
+        this.setState((prevState) => {
+          return {sideDrawerOpen: !prevState.sideDrawerOpen};
+        });
+    };
+    
+    backdropClickHandler = () => {
+        this.setState({sideDrawerOpen: false});
+    };
+
+    render() {
+        let backdrop;
+    
+        if (this.state.sideDrawerOpen) {
+          backdrop = <Backdrop click={this.backdropClickHandler} />
+        }
+
+        return (
+    <div className="App">
+    <Toolbar drawerClickHandler={this.drawerToggleClickHandler} />
+    <SideDrawer show={this.state.sideDrawerOpen} />
+    {backdrop}
+    <main style={{marginTop: '64px'}}>  
     <form style={{ marginBottom:"2rem"}}>
         <label>Task Name: </label> 
         <input className="form__input" type = "text" name="taskName" />
@@ -24,6 +55,11 @@ const NewTask = () => (
         <br></br>
         <button className="form__button">Submit</button>
     </form>
-);
+    </main>
+        
+    </div>
+        );
+    }
+}
 
 export default NewTask;
